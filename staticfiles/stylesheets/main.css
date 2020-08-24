@@ -7,3 +7,11 @@ canvas {
     height: 100vh;
     display: block;
 }
+
+#username__form input {
+    width: 7em;
+    height: 1.5em;
+    text-align: center;
+    border: none;
+    border-bottom: 1px solid black;
+}
