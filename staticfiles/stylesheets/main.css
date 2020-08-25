@@ -8,7 +8,16 @@ canvas {
     display: block;
 }
 
-#username__form input {
+input[type="submit"] {
+    width: 15em;
+    height: 1.5em;
+    border: none;
+    background-color: black;
+    color: white;
+    margin-bottom: 0.2em;
+}
+
+input[type="text"] {
     width: 7em;
     height: 1.5em;
     text-align: center;

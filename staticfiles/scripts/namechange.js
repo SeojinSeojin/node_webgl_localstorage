@@ -1,5 +1,4 @@
-const form = document.getElementById("username__form");
-const input = form.querySelector("input");
+const input = document.querySelector("input[type=text]");
 
 function saveName(event) {
     event.preventDefault();
@@ -11,11 +10,10 @@ function saveName(event) {
 function showName() {
     const username = localStorage.userName;
     input.placeholder = `${username}`;
-    input.value = "";
 }
 
 function init() {
-    form.addEventListener("submit", saveName);
+    input.addEventListener("change", saveName);
     if (localStorage.userName !== null && localStorage.userName !== undefined) {
         showName();
     }

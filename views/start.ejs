@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="stylesheets/main.css" />
+</head>
+
+<body>
+    <% for (i in members) { %>
+        <div class="member__list">
+            <% if (members[i] === me) { %>
+                <b><%= members[i] %> </b>
+                <% } else { %>
+                    <%= members[i] %>
+        </div>
+        <% }} %>
+            <script src="scripts/f5prevent.js"></script>
+</body>
+
+</html>
