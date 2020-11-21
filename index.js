@@ -24,6 +24,10 @@ app.get("/", function(req, res) {
     res.render("main.ejs");
 });
 
+app.get("/clock", function(req, res) {
+    res.render("clock.ejs")
+})
+
 const roomModel = require("./models/room");
 app.post("/start", async function(req, res) {
     try {
