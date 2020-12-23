@@ -28,6 +28,10 @@ app.get("/clock", function(req, res) {
     res.render("clock.ejs")
 })
 
+app.get("/clock2", function(req, res) {
+    res.render("clock2.ejs")
+})
+
 const roomModel = require("./models/room");
 app.post("/start", async function(req, res) {
     try {

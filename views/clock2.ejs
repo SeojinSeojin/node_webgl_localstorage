@@ -34,7 +34,6 @@
             bevelSize = 1.5;
 
         let font = null;
-        const mirror = false;
 
         let targetRotation = 0;
         let targetRotationOnPointerDown = 0;
@@ -60,7 +59,6 @@
             // SCENE
             scene = new THREE.Scene();
             scene.background = new THREE.Color("rgb(255, 255, 255)");
-            scene.fog = new THREE.Fog('skyblue', 250, 1400);
 
             // LIGHTS
             const dirLight = new THREE.DirectionalLight(0xffffff, 0.125);
@@ -74,34 +72,20 @@
 
             material = new THREE.MeshPhongMaterial({
                 color: 0xffffff,
-                flatShading: true
+                flatShading: false
             });
 
             group = new THREE.Group();
-            group.position.y = 200;
+            group.position.y = 100;
             scene.add(group);
 
             const loader = new THREE.FontLoader();
             loader.load("/fonts/Roboto_Regular.json", function(response) {
                 font = response;
-                createText()
+                createText();
             })
 
-            const plane = new THREE.Mesh(
-                new THREE.PlaneBufferGeometry(10000, 10000),
-                new THREE.MeshBasicMaterial({
-                    color: 0xffffff,
-                    opacity: 0.5,
-                    transparent: true
-                })
-            );
-
-            plane.position.y = 100;
-            plane.rotation.x = -Math.PI / 2;
-            scene.add(plane);
-
             // RENDERER
-
             renderer = new THREE.WebGLRenderer({
                 antialias: true
             });
@@ -110,7 +94,6 @@
             container.appendChild(renderer.domElement);
 
             // EVENTS
-
             container.style.touchAction = 'none';
             container.addEventListener('pointerdown', onPointerDown, false);
             window.addEventListener('resize', onWindowResize, false);
@@ -197,7 +180,6 @@
         function refreshText() {
 
             group.remove(textMesh1);
-            if (mirror) group.remove(textMesh2);
 
             if (!text) return;
 
@@ -209,7 +191,7 @@
 
             requestAnimationFrame(animate);
 
-            group.rotation.y += (targetRotation - group.rotation.y) * 0.05;
+            //group.rotation.y += (targetRotation - group.rotation.y) * 0.05;
 
             camera.lookAt(cameraTarget);
 
