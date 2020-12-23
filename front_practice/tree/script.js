@@ -4,13 +4,9 @@ init();
 
 function init() {
     scene = new THREE.Scene();
-    scene.background = new THREE.Color('grey');
 
     camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(0, -5, 12);
-
-    const ambient = new THREE.HemisphereLight(0xffffbb, 0x080820);
-    scene.add(ambient);
 
     const light = new THREE.DirectionalLight(0xFFFFFF, 1);
     light.position.set(1, 10, 6);
@@ -24,11 +20,11 @@ function init() {
     controls.target.set(0, 0, 0);
     controls.update();
 
-    scene.background = new THREE.Color(0xcffaf8);
+    scene.background = new THREE.Color(0x2c9cd4);
 
     const plane = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(10000, 10000),
-        new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 0.5 })
+        new THREE.MeshBasicMaterial({ color: 0xc5dbe6, opacity: 0.5 })
     );
     plane.position.y = -20;
     plane.rotation.x = -Math.PI / 2;
@@ -79,7 +75,7 @@ function init() {
     //눈
     const particles = new THREE.Geometry;
     for (let p = 0; p < 2000; p++) {
-        const particle = new THREE.Vector3(Math.random() * 500 - 250, Math.random() * 500 - 250, Math.random() * 500 - 250);
+        const particle = new THREE.Vector3(Math.random() * 500 - 250, Math.random() * 500 - 250, Math.random() * 550 - 200);
         particles.vertices.push(particle);
     }
     const particleTexture = THREE.ImageUtils.loadTexture('./img/snowflake.png');
@@ -89,6 +85,7 @@ function init() {
     scene.add(particleSystem);
 
     //선물상자
+    const presentBox = new THREE.Group()
     const geometry2 = new THREE.BoxGeometry(7, 7, 7);
     const material2 = new THREE.MeshToonMaterial({ color: 0xed413e });
     const box = new THREE.Mesh(geometry2, material2);
@@ -103,49 +100,32 @@ function init() {
     box2.position.y += 4
     box2.rotation.y = 0.2
     box2.rotation.z = 0.2
-    scene.add(box, box2);
+    presentBox.add(box, box2);
 
-    //방울
+    scene.add(presentBox)
+        //방울
     const geometry3 = new THREE.SphereGeometry(1.4, 32, 32);
     const material3 = new THREE.MeshToonMaterial({ color: 0xe8d072 });
-    const sphere = new THREE.Mesh(geometry3, material3);
-    sphere.position.z = -40;
-    sphere.position.y = 13;
-    sphere.position.x = 2;
-    const sphere2 = sphere.clone();
-    sphere2.position.y = 11;
-    sphere2.position.x = -3;
-    const sphere3 = sphere.clone();
-    sphere3.position.y = 7.5;
-    sphere3.position.x = -6;
-    const sphere4 = sphere.clone();
-    sphere4.position.y = 6;
-    sphere4.position.x = -1;
-    sphere4.position.z += 4
-    const sphere5 = sphere.clone();
-    sphere5.position.y = 4.2;
-    sphere5.position.x = 5;
-    const sphere6 = sphere.clone();
-    sphere6.position.y = -3;
-    sphere6.position.x = -9;
-    sphere6.position.z += 5
-    const sphere7 = sphere.clone();
-    sphere7.position.y = -2;
-    sphere7.position.x = -3.5;
-    sphere7.position.z += 7
-    const sphere8 = sphere.clone();
-    sphere8.position.y = -0.3;
-    sphere8.position.x = 2;
-    sphere8.position.z += 5
-    const sphere9 = sphere.clone();
-    sphere9.position.y = 1.2;
-    sphere9.position.x = 7.6;
-    sphere9.position.z += 3
-    const sphere0 = sphere.clone();
-    sphere0.position.y = 16.4;
-    sphere0.position.x = -0.4;
+    const xPoses = [0, 3.5, -2, -7.4, -2.5, 3, 8.5, -1, -9.5]
+    for (let j = 0; j < 9; j++) {
+        const sphere = new THREE.Mesh(geometry3, material3);
+        sphere.position.z = -40 + (Math.floor(j / 3)) * 2;
+        if (j == 1 || j == 3 || j == 6 || j == 8) {
+            sphere.position.z -= 3
+        }
+        sphere.position.y = 17 - (j * 2.5);
+        sphere.position.x = xPoses[j];
+        scene.add(sphere)
+    }
 
-    scene.add(sphere, sphere2, sphere3, sphere4, sphere5, sphere6, sphere7, sphere8, sphere9, sphere0);
+    //별
+    var starTexture = new THREE.TextureLoader().load("./img/star.png");
+    let geometry6 = new THREE.PlaneGeometry(7, 7);
+    let material6 = new THREE.MeshBasicMaterial({ map: starTexture, transparent: true });
+    let star = new THREE.Mesh(geometry6, material6);
+    star.position.z = -45;
+    star.position.y = 25
+    scene.add(star)
     update();
 }
 
