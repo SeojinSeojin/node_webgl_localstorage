@@ -20,10 +20,9 @@ function init() {
     light.position.set(0, 2, 1);
     scene.add(light);
 
-    renderer = new THREE.WebGLRenderer();
+    renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
-
     icecream = new THREE.Group()
         //Add meshes here 
     const geometry1 = new THREE.SphereGeometry(5, 35, 35, 0, Math.PI * 2);
