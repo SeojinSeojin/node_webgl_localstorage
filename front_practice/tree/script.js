@@ -30,14 +30,18 @@ function init() {
     plane.rotation.x = -Math.PI / 2;
     scene.add(plane);
 
-    //줄기;
-    const cube = new THREE.Mesh(new THREE.BoxGeometry(5, 35, 5), new THREE.MeshToonMaterial({ color: 0x61300d }));
+    //줄기
+    const treeMesh = new THREE.MeshStandardMaterial({ color: 0x61300d });
+    treeMesh.map = THREE.ImageUtils.loadTexture("img/tree.jpg")
+    const cube = new THREE.Mesh(new THREE.BoxGeometry(5, 35, 5), treeMesh);
     cube.position.z = -50;
     scene.add(cube);
 
     //이파리
+    const treeleafMesh = new THREE.MeshStandardMaterial({ color: 0x0c5e2c })
+    treeleafMesh.map = THREE.ImageUtils.loadTexture("img/treeleaf.png")
     for (let i = 2; i <= 3; i++) {
-        const cone = new THREE.Mesh(new THREE.ConeGeometry(5 * i, 10 * i, 32), new THREE.MeshToonMaterial({ color: 0x0c5e2c }))
+        const cone = new THREE.Mesh(new THREE.ConeGeometry(5 * i, 10 * i, 32), treeleafMesh)
         cone.position.z = -50;
         cone.position.y = 28 - (i - 1) * 10;
         scene.add(cone);
@@ -45,19 +49,21 @@ function init() {
     window.addEventListener('resize', resize, false);
 
     //이파리 장식
-    const torus = new THREE.Mesh(new THREE.TorusBufferGeometry(12.5, 0.4, 16, 100), new THREE.MeshToonMaterial({ color: 0xb32429 }));
+    const redlineMesh = new THREE.MeshStandardMaterial({ color: 0xb32429 })
+    redlineMesh.map = THREE.ImageUtils.loadTexture("img/redline.jpg")
+    const torus = new THREE.Mesh(new THREE.TorusBufferGeometry(12.5, 0.5, 16, 100), redlineMesh);
     torus.rotation.x = Math.PI / 2;
     torus.rotation.y = Math.PI / 12;
     torus.position.set(-1.5, 0, -50)
-    const torus2 = new THREE.Mesh(new THREE.TorusBufferGeometry(10, 0.4, 16, 100), new THREE.MeshToonMaterial({ color: 0xb32429 }));
+    const torus2 = new THREE.Mesh(new THREE.TorusBufferGeometry(10, 0.5, 16, 100), redlineMesh);
     torus2.rotation.x = Math.PI / 2;
     torus2.rotation.y = -Math.PI / 9;
     torus2.position.set(0.4, 7, -50)
-    const torus3 = new THREE.Mesh(new THREE.TorusBufferGeometry(7.5, 0.4, 16, 100), new THREE.MeshToonMaterial({ color: 0xb32429 }));
+    const torus3 = new THREE.Mesh(new THREE.TorusBufferGeometry(7.5, 0.5, 16, 100), redlineMesh);
     torus3.rotation.x = Math.PI / 2;
     torus3.rotation.y = Math.PI / 8;
     torus3.position.set(-1.3, 14, -50)
-    const torus4 = new THREE.Mesh(new THREE.TorusBufferGeometry(4.5, 0.4, 16, 100), new THREE.MeshToonMaterial({ color: 0xb32429 }));
+    const torus4 = new THREE.Mesh(new THREE.TorusBufferGeometry(4.5, 0.5, 16, 100), redlineMesh);
     torus4.rotation.x = Math.PI / 2;
     torus4.rotation.y = -Math.PI / 9;
     torus4.position.set(0.7, 19.5, -50)
@@ -77,7 +83,7 @@ function init() {
 
     //선물상자
     const presentBox = new THREE.Group()
-    const box = new THREE.Mesh(new THREE.BoxGeometry(7, 7, 7), new THREE.MeshToonMaterial({ color: 0xed413e }));
+    const box = new THREE.Mesh(new THREE.BoxGeometry(7, 7, 7), new THREE.MeshPhongMaterial({ color: 0xed413e }));
     box.position.z = -45
     box.position.y = -15
     box.position.x = 10
@@ -97,17 +103,22 @@ function init() {
     sphereSet1 = new THREE.Group();
     sphereSet2 = new THREE.Group();
     const geometry3 = new THREE.SphereGeometry(1.4, 32, 32);
-    const materialYellow = new THREE.MeshToonMaterial({ color: 0xfffbc9 });
-    const materialBlue = new THREE.MeshToonMaterial({ color: 0xc9fbff });
+    const materialYellow = new THREE.MeshPhongMaterial({ color: 0xfffbc9 });
+    const materialBlue = new THREE.MeshPhongMaterial({ color: 0xc9fbff });
     const xPoses = [0, 3.5, -2, -7.4, -2.5, 3, 8.5, -1, -9.5]
     for (let j = 0; j < 9; j++) {
         const sphereYellow = new THREE.Mesh(geometry3, materialYellow);
         const sphereBlue = new THREE.Mesh(geometry3, materialBlue);
-        sphereYellow.position.z = -40 + (Math.floor(j / 3)) * 2;
-        sphereBlue.position.z = -40 + (Math.floor(j / 3)) * 2;
+        sphereYellow.position.z = -41 + (Math.floor(j / 3)) * 2;
+        sphereBlue.position.z = -41 + (Math.floor(j / 3)) * 2;
         if (j == 1 || j == 3 || j == 6 || j == 8) {
             sphereYellow.position.z -= 3
             sphereBlue.position.z -= 3
+        } else if (j == 0) {
+            sphereYellow.position.y += 2
+            sphereBlue.position.y += 2
+            sphereYellow.position.z -= 2
+            sphereBlue.position.z -= 2
         }
         sphereYellow.position.y = 17 - (j * 2.5);
         sphereBlue.position.y = 17 - (j * 2.5);
@@ -132,7 +143,9 @@ function init() {
 
     //눈사람
     const snowman = new THREE.Group();
-    const snowman1 = new THREE.Mesh(new THREE.SphereGeometry(7, 40, 40), new THREE.MeshToonMaterial({ color: 0xffffff }));
+    const snowMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff })
+    snowMaterial.map = THREE.ImageUtils.loadTexture("img/snow.jpg")
+    const snowman1 = new THREE.Mesh(new THREE.SphereGeometry(7, 40, 40), snowMaterial);
     snowman1.position.set(-15, -15, -35)
     const snowman2 = snowman1.clone();
     snowman2.position.y = -5;
@@ -141,7 +154,9 @@ function init() {
     snowman2.scale.z *= 0.7;
     scene.fog = new THREE.Fog({ color: 0xffffff })
     const hat = new THREE.Group()
-    const cylinder = new THREE.Mesh(new THREE.CylinderGeometry(4, 4, 5, 32), new THREE.MeshToonMaterial({ color: 0x872222 }));
+    const hatMesh = new THREE.MeshStandardMaterial({ color: 0x872222 })
+    hatMesh.map = THREE.ImageUtils.loadTexture("img/hat.jpg")
+    const cylinder = new THREE.Mesh(new THREE.CylinderGeometry(4, 4, 5, 32), hatMesh);
     cylinder.position.set(-15, 4, -35)
     const cylinder2 = cylinder.clone();
     cylinder2.scale.x *= 2;
@@ -152,7 +167,7 @@ function init() {
     eyeR.position.set(-15, -3, -30)
     const eyeL = eyeR.clone();
     eyeL.position.x = -12;
-    const nose = new THREE.Mesh(new THREE.ConeGeometry(1, 6, 32), new THREE.MeshToonMaterial({ color: 0xed9528 }));
+    const nose = new THREE.Mesh(new THREE.ConeGeometry(1, 6, 32), new THREE.MeshStandardMaterial({ color: 0xed9528 }));
     nose.rotation.x = Math.PI / 2;
     nose.rotation.z = -Math.PI / 24;
     nose.position.set(-13, -5, -25);
@@ -168,8 +183,48 @@ function init() {
     merryChristmas.position.x = -13;
     merryChristmas.rotation.x = -Math.PI / 12
     snowman.add(merryChristmas);
-
     scene.add(snowman);
+
+    // 컴퓨터
+
+    const computer = new THREE.Group()
+    const loader = new THREE.TextureLoader();
+    const ironMesh = new THREE.MeshBasicMaterial({ map: loader.load("img/monitor.jpg") })
+    const monitorMaterials = [
+        ironMesh,
+        ironMesh,
+        ironMesh,
+        ironMesh,
+        new THREE.MeshBasicMaterial({ map: loader.load("img/mcc.png") }),
+        ironMesh,
+    ]
+    const monitorGeo = new THREE.BoxGeometry(9, 6, 0.1);
+    const monitor = new THREE.Mesh(monitorGeo, monitorMaterials);
+    monitor.position.y += 1.5
+    const monitorneck = new THREE.Mesh(new THREE.BoxGeometry(0.2, 1.7, 0.1), ironMesh)
+    monitorneck.position.y -= 2.3
+    const monitorBase = new THREE.Mesh(new THREE.BoxGeometry(5, 0.2, 2), ironMesh)
+    monitorBase.position.y -= 2.7
+
+    const blackMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 })
+    const keyBoardMaterials = [
+        blackMaterial,
+        blackMaterial,
+        new THREE.MeshBasicMaterial({ map: loader.load("img/keyboard.png") }),
+        blackMaterial,
+        blackMaterial,
+        blackMaterial,
+    ]
+    const keyBoard = new THREE.Mesh(new THREE.BoxGeometry(6, 0.1, 3), keyBoardMaterials)
+    keyBoard.position.y -= 2.7
+    keyBoard.position.z += 4
+    computer.add(monitor, monitorneck, monitorBase, keyBoard);
+    computer.position.y = -17
+    computer.position.x = 10
+    computer.position.z = -30
+    computer.rotation.y = -Math.PI * (1 / 6)
+    scene.add(computer)
+
     update();
 }
 
